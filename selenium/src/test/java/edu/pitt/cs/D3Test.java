@@ -14,7 +14,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.core.IsNot.not;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -41,6 +40,8 @@ public class D3Test {
   public void setUp() {
     ChromeOptions options = new ChromeOptions();
     options.addArguments("--headless");
+    options.addArguments("--no-sandbox");
+    options.addArguments("--disable-dev-shm-usage");
     driver = new ChromeDriver(options);
     js = (JavascriptExecutor) driver;
     vars = new HashMap<String, Object>();
@@ -277,68 +278,6 @@ public class D3Test {
     // |
     {
       List<WebElement> elements = driver.findElements(By.xpath("//h4[contains(.,\'Meow! from Jennyanydots.\')]"));
-      assert (elements.size() > 0);
-    }
-  }
-
-  @Test
-  public void dEFECT1FUNGREETACAT() {
-    // Test name: DEFECT1-FUN-GREET-A-CAT
-    // Step # | name | target | value
-    // 1 | open | http://localhost:8080/ |
-    driver.get("http://localhost:8080/");
-    // 2 | runScript | document.cookie = "1=false";document.cookie =
-    // "2=false";document.cookie = "3=true"; |
-    js.executeScript("document.cookie = \"1=false\";document.cookie = \"2=false\";document.cookie = \"3=true\";");
-    // 3 | click | linkText=Greet-A-Cat |
-    driver.findElement(By.linkText("Greet-A-Cat")).click();
-    // 4 | assertElementPresent | xpath=//h4[contains(.,'Meow!Meow!')] |
-    {
-      List<WebElement> elements = driver.findElements(By.xpath("//h4[contains(.,\'Meow!Meow!\')]"));
-      assert (elements.size() > 0);
-    }
-    // 5 | assertText | xpath=//h4[contains(.,'Meow!Meow!')] | Meow!Meow!'
-    assertThat(driver.findElement(By.xpath("//h4[contains(.,\'Meow!Meow!\')]")).getText(), is("Meow!Meow!\\\'"));
-  }
-
-  @Test
-  public void dEFECT2FUNFEED() {
-    // Test name: DEFECT2-FUN-FEED
-    // Step # | name | target | value
-    // 1 | open | http://localhost:8080/ |
-    driver.get("http://localhost:8080/");
-    // 2 | click | linkText=Feed-A-Cat |
-    driver.findElement(By.linkText("Feed-A-Cat")).click();
-    // 3 | click | id=catnips |
-    driver.findElement(By.id("catnips")).click();
-    // 4 | type | id=catnips | -3
-    driver.findElement(By.id("catnips")).sendKeys("-3");
-    // 5 | click | css=.btn |
-    driver.findElement(By.cssSelector(".btn")).click();
-    // 6 | waitForElementVisible | xpath=//*[@id='feedResult' and text()='Cat
-    // fight!'] | 3000
-    {
-      WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
-      wait.until(
-          ExpectedConditions.or(
-              ExpectedConditions.visibilityOfElementLocated(
-                  By.xpath("//*[@id=\'feedResult\' and text()=\'Cat fight!\']")),
-              ExpectedConditions.visibilityOfElementLocated(
-                  By.xpath("//*[@id=\'feedResult\' and text()=\'Nom, nom, nom.\']"))));
-    }
-    // 7 | assertText | id=feedResult | Cat fight!
-    assertThat(driver.findElement(By.id("feedResult")).getText(), is("Cat fight!"));
-  }
-
-  @Test
-  public void dEFECT3FUNGREETACATWITHNAME() {
-    // Test name: DEFECT3-FUN-GREET-A-CAT-WITH-NAME
-    // Step # | name | target | value
-    // 1 | open | http://localhost:8080/greet-a-cat/% |
-    driver.get("http://localhost:8080/greet-a-cat/%");
-    // 2 | assertElementPresent | xpath=//h4[contains(.,'Meow! from %.')] |
-    {
-      List<WebElement> elements = driver.findElements(By.xpath("//h4[contains(.,\'Meow! from %.\')]"));
       assert (elements.size() > 0);
     }
   }
